@@ -1,1 +1,6 @@
 p Index posts
+
+p= link_to 'Create post', new_post_path
+
+- @posts.each do |post|
+  p= link_to post.title, post

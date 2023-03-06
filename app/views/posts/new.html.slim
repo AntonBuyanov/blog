@@ -1,0 +1,16 @@
+= render 'shared/errors', resource: @post
+
+= form_with model: @post do |f|
+  p
+    p= f.label :title, 'Your post'
+    = f.text_field :title
+
+  p
+    p= f.label :body
+    = f.text_area :body
+
+  p
+    = f.label :image
+    = f.file_field :image, multiple: true
+
+  p= f.submit 'Create post'
