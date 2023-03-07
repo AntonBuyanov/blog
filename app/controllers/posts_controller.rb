@@ -3,7 +3,12 @@ class PostsController < ApplicationController
   before_action :load_post, only: %i[show destroy]
 
   def index
-    @posts = Post.all
+    author_id = params[:author_id]
+    if author_id
+      @posts = Post.where('author_id = ?', author_id).order('updated_at desc').page params[:page]
+    else
+      @posts = Post.all.order('updated_at desc').page params[:page]
+    end
   end
 
   def show; end
@@ -30,10 +35,10 @@ class PostsController < ApplicationController
   private
 
   def load_post
-    @post = Post.with_attached_image.find(params[:id])
+    @post = Post.with_attached_images.find(params[:id])
   end
 
   def post_params
-    params.require(:post).permit(:title, :body, :author_id)
+    params.require(:post).permit(:title, :body, :author_id, images: [])
   end
 end

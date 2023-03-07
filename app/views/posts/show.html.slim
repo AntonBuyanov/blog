@@ -1,6 +1,6 @@
 = render 'shared/errors', resource: @post
 
-= current_user.email
+= @post.author.email
 h1= @post.title
 p= @post.body
 

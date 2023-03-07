@@ -1,6 +1,8 @@
 p Index posts
-
-p= link_to 'Create post', new_post_path
+= link_to 'Свои', posts_path(author_id: current_user.id)
+= link_to 'Все', posts_path
 
 - @posts.each do |post|
   p= link_to post.title, post
+
+= paginate @posts, theme: 'bootstrap-5'
