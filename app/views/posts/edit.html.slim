@@ -1,0 +1,16 @@
+.edit-post
+  .container-fluid.col-md-7
+    = form_with model: @post do |f|
+      p
+        p= f.label :title, 'Your post'
+        = f.text_field :title, class: 'form-control mt-2'
+
+      p
+        p= f.label :body
+        = f.text_area :body, class: 'form-control mt-2'
+
+      p
+        = f.label :images, class: 'formFileSm'
+        = f.file_field :images, multiple: true, direct_upload: true, class: 'form-control form-control-sm'
+
+      p= f.submit 'Save', class: 'btn btn-sm btn-success'

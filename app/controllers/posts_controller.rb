@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
-  # before_action :authenticate_user!, except: [:index, :show]
-  before_action :load_post, only: %i[show destroy]
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :load_post, only: %i[show edit update destroy]
 
   def index
     author_id = params[:author_id]
@@ -17,6 +17,17 @@ class PostsController < ApplicationController
     @post = Post.new
   end
 
+  def edit; end
+
+  def update
+    if current_user.author?(@post)
+      @post.update(post_params)
+      redirect_to @post
+    else
+      redirect_to @post, alert: 'You is not author post'
+    end
+  end
+
   def create
     @post = current_user.posts.new(post_params)
 
@@ -28,8 +39,12 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    @post.destroy
-    redirect_to root_path, notice: 'Your post successfully delete'
+    if current_user.author?(@post)
+      @post.destroy
+      redirect_to root_path, notice: 'Your post successfully delete'
+    else
+      redirect_to @post, alert: 'You is not author post'
+    end
   end
 
   private

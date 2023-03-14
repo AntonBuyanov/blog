@@ -1,18 +1,28 @@
-= render 'shared/errors', resource: @post
+.post-errors
+  = render 'shared/errors', resource: @post
 
-= @post.author.email
-h1= @post.title
-p= @post.body
+.post
+  = render @post
+  - if @post.images.attached?
+    .container-fluid.col-md-7
+      - @post.images.each do |image|
+        = link_to image.filename.to_s, url_for(image)
+        p= link_to 'Delete image', attachment_path(image.id), data: { 'turbo-method': :delete }, class: 'btn btn-sm btn-danger', method: :delete
 
-p= button_to 'Delete post', @post, method: :delete
+.container-fluid.col-md-7.border-bottom
+  .btn-group
+    p= link_to 'Delete post', @post, method: :delete, data: { 'turbo-method': :delete }, class: 'btn btn-sm btn-danger me-1'
+    p= link_to 'Edit post', edit_post_path(@post), class: 'btn btn-sm btn-secondary', form: 'edit_form'
 
-p Comments
+.comments
+  .container-fluid.col-md-7.mt-3
+    | Comments
+    - @post.comments.each do |comment|
+      p
+        strong= comment.author.email
+        |: &nbsp;
+        = comment.body
 
-- @post.comments.each do |comment|
-  strong= comment.author.email
-  |: &nbsp;
-  = comment.body
-
-= form_with model: [@post, @post.comments.build] do |f|
-  = f.text_area :body
-  = f.submit 'Add comment'
+    = form_with model: [@post, @post.comments.build], data: { turbo: false } do |f|
+      = f.text_area :body, class: 'form-control mt-2'
+      = f.submit 'Add comment', class: 'btn btn-sm btn-success mt-2'

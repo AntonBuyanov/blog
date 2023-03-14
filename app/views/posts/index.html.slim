@@ -1,8 +1,7 @@
-p Index posts
-= link_to 'Свои', posts_path(author_id: current_user.id)
-= link_to 'Все', posts_path
+.container-fluid.d-flex.justify-content-center
+  -if current_user
+    = link_to 'Все', posts_path, class: 'btn-sm page-link me-1'
+    = link_to 'Свои', posts_path(author_id: current_user.id), class: 'btn-sm page-link'
 
-- @posts.each do |post|
-  p= link_to post.title, post
-
-= paginate @posts, theme: 'bootstrap-5'
+= render @posts
+= paginate @posts, theme: 'bootstrap-5', pagination_class: 'pagination-sm p-4 flex-wrap justify-content-center'
